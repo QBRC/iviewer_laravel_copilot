@@ -1,12 +1,12 @@
 # iViewer Frontend Setup
 
-In order to use the iViewer frontend on your localhost or server, you may need to edit the following files:
+In order to use the iViewer frontend on your localhost or server, you may need to edit the following files after cloning the repository:
 
 ## Configuration Files
 
 ### 1. The Main `.env` File
 
-Location: Root of the downloaded folder (`iviewer-copilot`).
+Location: Root of the downloaded folder (`iviewer-laravel-copilot`).
 
 - **Ollama Host:** If you decide to build your own Ollama, specify the Ollama host IP and ports.
 - **OpenAI API Key:** If you want to try with GPT, you can just put your OpenAI API key here.
@@ -41,9 +41,9 @@ Location: `nginx/iviewer.config`
 
 ## Steps to Run the Docker Compose
 
-1. Navigate to the `iviewer-copilot` folder:
+1. Navigate to the `iviewer-laravel-copilot` folder:
    ```sh
-   cd iviewer-copilot
+   cd iviewer-laravel-copilot
    ```
 
 2. Edit the two .env files as described above.
@@ -62,7 +62,7 @@ Location: `nginx/iviewer.config`
 
 1. Navigate to the images directory:
    ```sh
-   cd iviewer-copilot/laravel_smp/public/images/original/
+   cd iviewer-laravel-copilot/laravel_smp/public/images/original/
    ```	
 2. Create a new project folder:
    ```sh

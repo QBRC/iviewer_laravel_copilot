@@ -7,7 +7,6 @@ z.quickstart.txt
 selected_models
 slides_folder
 ckpts
-*.sh
 z.*
 .DS_Store
 

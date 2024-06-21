@@ -23,9 +23,10 @@ Location: Root of the downloaded folder (`iviewer-copilot`).
 Location: Inside the `laravel_smp` folder.
 
 - **Image Path:** 
-  - Edit `# Image_PATH`. If you want the website to be accessible beyond localhost, change `localhost` to your IP address.
-- **Website Port:** 
-  - If you have other services running on port 80, assign another port but ensure this port matches the port configured in the Nginx file (`nginx/iviewer.config` line 2 `listen port;`).
+  - Edit `# Image_PATH`. If you want the website to be accessible beyond localhost, change `localhost` to your IP address. If you have other services running on port 80, assign another port but ensure this port matches the port configured in the Nginx file (`nginx/iviewer.config` line 2 `listen port;`). 
+  ```
+  IMAGE_PATH=http://localhost:5000/images/
+  ```
 - **API Configuration:**
   - Edit `# API` to change the `API_IP` or service port. Ensure the port matches the one specified in each Dockerfile in the folders: `deepzoom`, `annotation`, `nuclei`, `copilot`.
 - **Database Configuration:**
@@ -50,7 +51,7 @@ Location: `nginx/iviewer.config`
    cd iviewer-copilot
    ```
 
-2. Edit the two .env files as described above.
+2. Edit the two .env files, mysql configure file and nginx configure file as described above.
 3. Start the Docker containers:
    ```sh
    docker compose up -d
