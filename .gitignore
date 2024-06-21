@@ -10,7 +10,6 @@ ckpts
 *.sh
 z.*
 .DS_Store
-.env
 
 
 laravel_smp/node_modules
