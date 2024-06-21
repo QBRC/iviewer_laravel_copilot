@@ -1,0 +1,167 @@
+version: '3'
+
+#networks:
+#  iviewer-network:
+#    driver: bridge
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./laravel_smp/Dockerfile
+    image: iviewer-ui
+    container_name: iviewer-ui
+    restart: unless-stopped
+    # ports:
+    #   - 9000:9000
+    network_mode: host
+    working_dir: /var/www/
+    depends_on:
+      - db
+    volumes:
+      - ./laravel_smp:/var/www
+
+  db:
+    image: mysql:latest
+    container_name: db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - iviewer-db:/var/lib/mysql
+      - ./db:/etc/mysql/conf.d
+    network_mode: host
+   
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+#   ports:
+#      - 80:80
+    volumes:
+      - ./laravel_smp:/var/www
+      - ./nginx:/etc/nginx/conf.d/
+    network_mode: host
+
+  redis:
+    image: redis:latest
+    container_name: iviewer-redis
+#    networks:
+#      - iviewer-network
+    network_mode: host
+
+  deepzoom:
+    image: iviewer-deepzoom:latest
+    container_name: iviewer-deepzoom
+    build:
+      context: .
+      dockerfile: ./deepzoom/Dockerfile
+#     ports:
+#      - "10010:9010"
+    depends_on:
+      - redis
+    network_mode: host
+#   networks:
+#      - iviewer-network
+    volumes:
+      - ${SLIDES_DIR}:/app/abc
+      - ${DATABASE_DIR}:/app/databases
+    environment:
+      - DATABASE_PATH=/app/databases
+      - REDIS_HOST=127.0.0.1
+      - REDIS_PORT=6379
+
+  annotation:
+    image: iviewer-annotation:latest
+    container_name: iviewer-annotation
+    build:
+      context: .
+      dockerfile: ./annotation/Dockerfile
+#    ports:
+#      - "10020:9020"
+    depends_on:
+      - redis
+#   networks:
+#      - iviewer-network
+    network_mode: host
+    volumes:
+      - ${SLIDES_DIR}:/app/abc
+      - ${DATABASE_DIR}:/app/databases
+    environment:
+      - DATABASE_PATH=/app/databases
+      - REDIS_HOST=127.0.0.1
+      - REDIS_PORT=6379
+
+  hdyolo:
+    image: iviewer-hdyolo:latest
+    container_name: iviewer-hdyolo
+    build:
+      context: .
+      dockerfile: ./nuclei/Dockerfile.agent
+    depends_on:
+      - redis
+#   networks:
+#      - iviewer-network
+    network_mode: host
+    volumes:
+      - ${SLIDES_DIR}:/app/abc
+      - ${DATABASE_DIR}:/app/databases
+    environment:
+      - DATABASE_PATH=/app/databases
+      - REDIS_HOST=127.0.0.1
+      - REDIS_PORT=6379
+  
+  nuclei:
+    image: iviewer-nuclei:latest
+    container_name: iviewer-nuclei
+    build:
+      context: .
+      dockerfile: ./nuclei/Dockerfile.queue
+#   ports:
+#      - "10030:9030"
+    depends_on:
+      - redis
+      - hdyolo
+#   networks:
+#      - iviewer-network
+    network_mode: host
+    volumes:
+      - ${SLIDES_DIR}:/app/abc
+      - ${DATABASE_DIR}:/app/databases
+    environment:
+      - DATABASE_PATH=/app/databases
+      - REDIS_HOST=127.0.0.1
+      - REDIS_PORT=6379
+
+  copilot:
+    image: iviewer-copilot:latest
+    container_name: iviewer-copilot
+    build:
+      context: .
+      dockerfile: ./copilot/Dockerfile
+#   ports:
+#      - "10040:9040"
+    depends_on:
+      - redis
+      - annotation
+#    networks:
+#      - iviewer-network
+    network_mode: host
+    volumes:
+      - ${SLIDES_DIR}:/app/abc
+      - ${DATABASE_DIR}:/app/databases
+    environment:
+      - ANNOTATION_HOST=localhost
+      - ANNOTATION_PORT=9020
+      - OLLAMA_HOST=${OLLAMA_HOST}
+      - OLLAMA_PORT_CAPTION=${OLLAMA_PORT_CAPTION}
+      - OLLAMA_PORT_CHATBOT=${OLLAMA_PORT_CHATBOT}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - NO_PROXY=localhost,127.0.0.1,annotation,${OLLAMA_HOST}
+volumes:
+  iviewer-db:
