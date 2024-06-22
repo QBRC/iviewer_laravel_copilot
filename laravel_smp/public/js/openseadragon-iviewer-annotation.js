@@ -88,7 +88,7 @@ class IViewerAnnotation {
         this.registerKonvaActions();
 
         // Add Konva Layers
-        const layerCfgs = this.cfs?.layers || [{'id': 'konvaLayer-0', 'capacity': 512}];
+        const layerCfgs = this.cfs?.layers || [{'id': 'konvaLayer-0', 'capacity': 2048}];
         this.layerQueues = {};
         layerCfgs.forEach((cfg, index) => {
             let id = cfg?.id || `konvaLayer-${index}`;
