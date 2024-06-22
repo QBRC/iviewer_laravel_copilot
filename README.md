@@ -1,12 +1,17 @@
-# I-Viewer Copilot for Digital Pathology
+# I-Viewer Copilot Backend
 ## Introduction
 I-viewer copilot is a comprehensive online framework designed to address the needs of collaborative pathology analysis while harnessing the power of AI. I-viewer deployed advanced real-time AI-agents for different tasks and relies on MLLM for information integration and Human-AI collaboration. 
 
 # iViewer Frontend Setup
 
-In order to use the iViewer frontend on your localhost or server, you may need to edit the following files:
+In order to use the iViewer frontend on your localhost or server, you may need to edit the following files after cloning the repository:
 
 ## Configuration Files
+
+Before editing those files, you need to change the ownership of the laravel_smp folder to the user with ID 1004.
+```
+chown -R 1004 laravel_smp
+```
 
 ### 1. The Main `.env` File
 
@@ -63,6 +68,24 @@ Location: `nginx/iviewer.config`
 5. Access the Application
    Open your browser and go to http://localhost:port or http://ip:port.
    Or view a demo by opening the `./templates/index.html`
+
+6. logging into iViewer
+   Default login credentials:
+   Admin login:
+      - Username: admin@email.com
+      - Password: admin
+
+   Admin privileges include access to additional options in the menu:
+      - Add/Edit Users
+      - Create/Edit Teams
+      - Change API Links (Models)
+      - Upload New Slides CSV Files
+
+   Regular user login:
+      - Username: user1@email.com
+      - Password: helloworld
+  
+   Regular users can only view images.
 
 ## How to Display Your Own Slides
 
