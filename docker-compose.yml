@@ -9,7 +9,7 @@ services:
     build:
       context: .
       dockerfile: ./laravel_smp/Dockerfile
-    image: dannicq/iviewer_laravel_copilot:iviewer-ui
+    image: utsw1qbrc/iviewer_laravel_copilot:iviewer-ui
     container_name: iviewer-ui
     restart: unless-stopped
     # ports:
@@ -56,7 +56,7 @@ services:
     network_mode: host
 
   deepzoom:
-    image: dannicq/iviewer_laravel_copilot:iviewer-deepzoom
+    image: utsw1qbrc/iviewer_laravel_copilot:iviewer-deepzoom
     container_name: iviewer-deepzoom
     build:
       context: .
@@ -77,7 +77,7 @@ services:
       - REDIS_PORT=6379
 
   annotation:
-    image: dannicq/iviewer_laravel_copilot:iviewer-annotation
+    image: utsw1qbrc/iviewer_laravel_copilot:iviewer-annotation
     container_name: iviewer-annotation
     build:
       context: .
@@ -98,7 +98,7 @@ services:
       - REDIS_PORT=6379
 
   hdyolo:
-    image: dannicq/iviewer_laravel_copilot:iviewer-hdyolo
+    image: utsw1qbrc/iviewer_laravel_copilot:iviewer-hdyolo
     container_name: iviewer-hdyolo
     build:
       context: .
@@ -117,7 +117,7 @@ services:
       - REDIS_PORT=6379
   
   nuclei:
-    image: dannicq/iviewer_laravel_copilot:iviewer-nuclei
+    image: utsw1qbrc/iviewer_laravel_copilot:iviewer-nuclei
     container_name: iviewer-nuclei
     build:
       context: .
@@ -139,7 +139,7 @@ services:
       - REDIS_PORT=6379
 
   copilot:
-    image: dannicq/iviewer_laravel_copilot:iviewer-copilot
+    image: utsw1qbrc/iviewer_laravel_copilot:iviewer-copilot
     container_name: iviewer-copilot
     build:
       context: .
