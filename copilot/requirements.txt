@@ -1,0 +1,16 @@
+aiocache
+aiosqlite
+asyncio
+async_lru
+fastapi
+gradio
+gunicorn
+imagecodecs
+ollama
+openai
+opencv-python-headless
+redis
+sqlalchemy
+torch
+torchvision
+scikit-image
